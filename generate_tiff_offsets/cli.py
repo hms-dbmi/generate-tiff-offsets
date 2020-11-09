@@ -1,7 +1,9 @@
 """Console script for generate_tiff_offsets."""
 import argparse
 import sys
+from pathlib import Path
 
+from .generate_tiff_offsets import generate_tiff_offsets
 
 def main():
     """Console script for generate_tiff_offsets."""
@@ -11,7 +13,7 @@ def main():
         '--input_file', required=True, type=Path,
         help='Directory containing ome-tiff files to read')
     args = parser.parse_args()
-    main(args.input_file)
+    generate_tiff_offsets(args.input_file)
 
 
 if __name__ == "__main__":
