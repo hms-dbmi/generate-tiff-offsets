@@ -5,4 +5,4 @@ A cli tool for generating IFD offsets within a tiff file, useful for optimizing 
 ::
 
   pip install generate-tiff-offsets
-  generate_tiff_offsets --input-file my_file.ome.tiff
+  generate_tiff_offsets --input_file my_file.ome.tiff
