@@ -4,7 +4,7 @@
 
 from setuptools import setup, find_packages
 
-with open('README.md') as readme_file:
+with open('README.rst') as readme_file:
     readme = readme_file.read()
 
 requirements = [ 'tifffile===2020.10.1' ]
@@ -45,6 +45,6 @@ setup(
     test_suite='tests',
     tests_require=test_requirements,
     url='https://github.com/ilan-gold/generate_tiff_offsets',
-    version='0.1.0',
+    version='0.1.1',
     zip_safe=False,
 )
