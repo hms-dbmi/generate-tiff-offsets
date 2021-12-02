@@ -22,9 +22,9 @@ where `IFD_offset_n` corresponds to the _nth_ byte-offset for the corresponding
 Image File Directory in the linear TIFF series. The ordering of IFDs is determined
 by the `DimensionOrder` attribute in the OME-XML metadata.
 
-> Note: Each combination of `C`, `Z`, and `T` corresponds **one IFD**, meaning the
+> Note: Each combination of `C`, `Z`, and `T` corresponds to **one IFD**, meaning the
 > total number of IFDs is the product of these dimensions (`T x C x Z`) and
-> _independent_ of the number of pyramidal resolutions.
+> _independent_ of the number of pyramidal resolutions in the OME-TIFF.
 
 ## 🐍 Python CLI
 
