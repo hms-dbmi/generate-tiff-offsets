@@ -5,8 +5,8 @@
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>➡️</text></svg>">
     <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
-    <script src="https://unpkg.com/alpinejs" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/geotiff"></script>
+    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.6.0/dist/alpine.min.js" defer></script>
+    <script src="https://unpkg.com/geotiff@1.0.9/dist-browser/geotiff.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>IFD Index Generator</title>
   </head>
@@ -43,8 +43,8 @@
                 <input
                     type="file"
                     class="absolute w-full h-full opacity-0"
-                    x-on:change="file = getFile($event); processing = true; offsets = await getOffsets(file); processing = false;"
-                    x-on:drop="file = getFile($event); processing = true; offsets = await getOffsets(file); processing = false;"
+                    @change.prevent="file = getFile($event); processing = true; offsets = await getOffsets(file); processing = false;"
+                    @drop.prevent="file = getFile($event); processing = true; offsets = await getOffsets(file); processing = false;"
                     x-effect="$el.disabled = processing; processing ? $el.classList.add('cursor-not-allowed') : $el.classList.remove('cursor-not-allowed')"
                 >
 
@@ -68,7 +68,7 @@
                   <a
                     :class="processing ? 'from-pink-500 to-yellow-500 cursor-not-allowed' : 'from-green-400 to-blue-500'"
                     class="inline-flex items-center justify-between py-2 px-4 border-transparent text-base leading-6 font-medium rounded-md text-white bg-gradient-to-r  transition ease-in-out duration-150"
-                    x-effect="$el.setAttribute('href', URL.createObjectURL(new Blob([JSON.stringify(offsets)], {type: 'text/json'}))); $el.setAttribute('download', getOffestsName(file.name ?? ''))"
+                    x-effect="$el.setAttribute('href', URL.createObjectURL(new Blob([JSON.stringify(offsets)], {type: 'text/json'}))); $el.setAttribute('download', getOffestsName(file?.name ?? ''))"
                   >
                     <svg :class="processing ? 'animate-spin' : ''" class="-ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                       <circle x-show="processing" class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
