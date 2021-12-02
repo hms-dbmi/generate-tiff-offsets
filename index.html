@@ -5,13 +5,14 @@
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>➡️</text></svg>">
     <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.6.0/dist/alpine.min.js" defer></script>
+    <!-- <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.6.0/dist/alpine.js" defer></script> -->
+    <script src="//unpkg.com/alpinejs" defer></script>
     <script src="https://unpkg.com/geotiff@1.0.9/dist-browser/geotiff.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>IFD Index Generator</title>
   </head>
   <body>
-      <div x-data="{ file: null, processing: false, offsets: [] }" class="relative bg-white">
+      <div x-data="{ file: null, processing: false, offsets: [], warning: false }" x-effect="file && (warning = false)" class="relative bg-white">
 
           <div x-data="{ open: true }" x-show="open" class="bg-indigo-600">
               <div class="mx-auto py-1 px-4">
@@ -43,8 +44,8 @@
                 <input
                     type="file"
                     class="absolute w-full h-full opacity-0"
-                    @change.prevent="file = getFile($event); processing = true; offsets = await getOffsets(file); processing = false;"
-                    @drop.prevent="file = getFile($event); processing = true; offsets = await getOffsets(file); processing = false;"
+                    @change.prevent="file = getFile($event); processing = true; offsets = await getOffsets(file).catch(() => { file = null; warning = true; return [] }); processing = false;"
+                    @drop.prevent="file = getFile($event); processing = true; offsets = await getOffsets(file).catch(() => { file = null; warning = true; return [] }); processing = false;"
                     x-effect="$el.disabled = processing; processing ? $el.classList.add('cursor-not-allowed') : $el.classList.remove('cursor-not-allowed')"
                 >
 
@@ -81,6 +82,21 @@
 
             </div>
 
+            <div x-show="warning" class="m-10 bg-red-100 text-red-700 px-4 py-3 rounded relative" role="alert">
+              <strong class="font-bold">Oop!</strong>
+              <span class="block sm:inline">Something went wrong. Open the console for more information.</span>
+
+              <div class="absolute top-0 bottom-0 right-0 px-4 py-3">
+                <button type="button" @click="warning = false" class="-mr-1 flex p-1 rounded-md sm:-mr-2">
+                  <span class="sr-only">Dismiss</span>
+                  <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+
+            </div>
+
           </div>
 
       </div>
@@ -95,9 +111,10 @@
         return name.match(re) ? name.replace(re, '.offsets.json') : 'data.offsets.json';
       }
       async function getOffsets(file) {
-        let tiff = await GeoTIFF.fromBlob(file);
-        let ifds = await getIFDs(tiff)
-        return ifds;
+        return GeoTIFF.fromBlob(file).then(getIFDs).catch(err => {
+          console.warn(err);
+          throw err; // rethrow error to trigger UI change.
+        });
       }
       async function getIFDs(tiff) {
         let offsets = [];
