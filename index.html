@@ -44,6 +44,7 @@
                 <input
                     type="file"
                     class="absolute w-full h-full opacity-0"
+                    accept=".tif,.tiff"
                     @change.prevent="file = getFile($event); processing = true; offsets = await getOffsets(file).catch(() => { file = null; warning = true; return [] }); processing = false;"
                     @drop.prevent="file = getFile($event); processing = true; offsets = await getOffsets(file).catch(() => { file = null; warning = true; return [] }); processing = false;"
                     x-effect="$el.disabled = processing; processing ? $el.classList.add('cursor-not-allowed') : $el.classList.remove('cursor-not-allowed')"
