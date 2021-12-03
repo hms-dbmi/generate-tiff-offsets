@@ -35,9 +35,11 @@ Image File Directory in the linear TIFF series.
 ```
 
 This command writes the Version 0 Index to the local file system, adjacent to the
-input TIFF with the file name `<my_file>.offsets.json`. Our web-viewer,
-[Avivator](http://avivator.gehlenborglab.org) expects this naming convension and folder
-structure in order for the Index OME-TIFF to be recognized.
+input TIFF with the file name `<my_file>.offsets.json`.
+
+> NOTE: ⚠️ Our OME-TIFF web-viewer, [Avivator](http://avivator.gehlenborglab.org) expects
+> this naming convension and folder structure in order for the Index
+> OME-TIFF to be recognized.
 
 ## 🌎 Web application
 
