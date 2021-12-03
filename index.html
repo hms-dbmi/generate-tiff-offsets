@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>➡️</text></svg>">
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <script defer src="https://unpkg.com/alpinejs@3.7.0/dist/cdn.min.js"></script>
+    <script src="https://unpkg.com/geotiff@1.0.9/dist-browser/geotiff.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IFD Index Generator</title>
+  </head>
+  <body>
+      <div x-data="{ file: null, processing: false, offsets: [], warning: false }" x-effect="file && (warning = false)" class="relative bg-white">
+
+          <div x-data="{ open: true }" x-show="open" class="bg-indigo-600">
+              <div class="mx-auto py-1 px-4">
+                <div class="flex items-center justify-between flex-wrap">
+                  <div class="w-0 flex-1 flex items-center truncate">
+                    <p class="ml-3 text-white">
+                        We improved OME-TIFF random access efficency using an IFD Index.&ensp;
+                        <a class="underline font-medium" href="https://www.youtube.com/watch?v=cGB2TsSnfbo" target="_blank" rel="noreferrer">Learn more →</a>
+                    </p>
+                  </div>
+                  <div class="order-2 flex-shrink-0 sm:order-3 sm:ml-3">
+                    <button type="button" @click="open = false" class="-mr-1 flex p-1 rounded-md hover:bg-indigo-500 focus:outline-none sm:-mr-2">
+                      <span class="sr-only">Dismiss</span>
+                      <svg class="h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          <div class="relative max-w-2xl mx-auto m-8 flex flex-col">
+            <div
+                id="dropzone"
+                class="rounded-lg h-48 border-2 border-gray-200 border-dashed text-gray-600 flex flex-col justify-center items-center"
+                :class="processing ? '' : 'hover:border-gray-400'"
+            >
+                <input
+                    type="file"
+                    class="absolute w-full h-full opacity-0"
+                    accept=".tif,.tiff"
+                    @change.prevent="file = getFile($event); processing = true; offsets = await getOffsets(file).catch(() => { file = null; warning = true; return [] }); processing = false;"
+                    @drop.prevent="file = getFile($event); processing = true; offsets = await getOffsets(file).catch(() => { file = null; warning = true; return [] }); processing = false;"
+                    x-effect="$el.disabled = processing; processing ? $el.classList.add('cursor-not-allowed') : $el.classList.remove('cursor-not-allowed')"
+                >
+
+                <svg xmlns="http://www.w3.org/2000/svg" class="text-gray-600 h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+
+                <div>
+                    <div class="text-center">
+                        <p>Drag and Drop <strong>TIFF</strong></p>
+                    </div>
+                </div>
+
+            </div>
+
+            <div x-show="file" class="my-4 flex justify-end items-center">
+
+                <p><code class="mx-4 text-sm" x-text="getOffestsName(file?.name ?? '')"></code></p>
+
+                <span class="inline-flex rounded-md shadow-sm">
+                  <a
+                    :class="processing ? 'from-pink-500 to-yellow-500 cursor-not-allowed' : 'from-green-400 to-blue-500'"
+                    class="inline-flex items-center justify-between py-2 px-4 border-transparent text-base leading-6 font-medium rounded-md text-white bg-gradient-to-r  transition ease-in-out duration-150"
+                    x-effect="$el.setAttribute('href', URL.createObjectURL(new Blob([JSON.stringify(offsets)], {type: 'text/json'}))); $el.setAttribute('download', getOffestsName(file?.name ?? ''))"
+                  >
+                    <svg :class="processing ? 'animate-spin' : ''" class="-ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle x-show="processing" class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                      <path x-show="processing" class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      <path x-show="!processing" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10" />
+                    </svg>
+                    <span x-text="processing ? 'Processing' : 'Download'"></span>
+                  </a>
+                </span>
+
+            </div>
+
+            <div x-show="warning" class="m-10 bg-red-100 text-red-700 px-4 py-3 rounded relative" role="alert">
+              <strong class="font-bold">Oop!</strong>
+              <span class="block sm:inline">Something went wrong. Open the console for more information.</span>
+
+              <div class="absolute top-0 bottom-0 right-0 px-4 py-3">
+                <button type="button" @click="warning = false" class="-mr-1 flex p-1 rounded-md sm:-mr-2">
+                  <span class="sr-only">Dismiss</span>
+                  <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+
+            </div>
+
+          </div>
+
+      </div>
+  </body>
+  <script>
+      function getFile(e) {
+        let { files } = e.type === 'change' ? e.target : e.dataTransfer;
+        return files[0];
+      }
+      function getOffestsName(name) {
+        let re = /((\.ome)?\.tiff?)/;
+        return name.match(re) ? name.replace(re, '.offsets.json') : 'data.offsets.json';
+      }
+      async function getOffsets(file) {
+        return GeoTIFF.fromBlob(file).then(getIFDs).catch(err => {
+          console.warn(err);
+          throw err; // rethrow error to trigger UI change.
+        });
+      }
+      async function getIFDs(tiff) {
+        let offsets = [];
+        async function walk(tiff, offset) {
+          if (!offset) return;
+          offsets.push(offset);
+          let ifd = await tiff.parseFileDirectoryAt(offset);
+          await walk(tiff, ifd.nextIFDByteOffset);
+        }
+        await walk(tiff, tiff.firstIFDOffset);
+        return offsets;
+      }
+  </script>
+</html>
