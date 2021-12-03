@@ -5,8 +5,7 @@
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>➡️</text></svg>">
     <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
-    <!-- <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.6.0/dist/alpine.js" defer></script> -->
-    <script src="//unpkg.com/alpinejs" defer></script>
+    <script defer src="https://unpkg.com/alpinejs@3.7.0/dist/cdn.min.js"></script>
     <script src="https://unpkg.com/geotiff@1.0.9/dist-browser/geotiff.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>IFD Index Generator</title>
@@ -19,7 +18,7 @@
                 <div class="flex items-center justify-between flex-wrap">
                   <div class="w-0 flex-1 flex items-center truncate">
                     <p class="ml-3 text-white">
-                        Generate an IFD Index for your OME-TIFF.&ensp;
+                        We improved OME-TIFF random access efficency using an IFD Index.&ensp;
                         <a class="underline font-medium" href="https://www.youtube.com/watch?v=cGB2TsSnfbo" target="_blank" rel="noreferrer">Learn more →</a>
                     </p>
                   </div>
@@ -56,7 +55,7 @@
 
                 <div>
                     <div class="text-center">
-                        <p>Drag and Drop <strong>OME-TIFF</strong></p>
+                        <p>Drag and Drop <strong>TIFF</strong></p>
                     </div>
                 </div>
 
@@ -108,7 +107,7 @@
         return files[0];
       }
       function getOffestsName(name) {
-        let re = /(\.ome?\.tiff?)/;
+        let re = /((\.ome)?\.tiff?)/;
         return name.match(re) ? name.replace(re, '.offsets.json') : 'data.offsets.json';
       }
       async function getOffsets(file) {
