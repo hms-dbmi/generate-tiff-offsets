@@ -4,7 +4,7 @@
 
 from setuptools import setup, find_packages
 
-with open('README.rst') as readme_file:
+with open('README.md') as readme_file:
     readme = readme_file.read()
 
 requirements = [ 'tifffile==2020.10.1' ]
@@ -37,6 +37,7 @@ setup(
     install_requires=requirements,
     license="MIT license",
     long_description=readme,
+    long_description_content_type='text/markdown',
     include_package_data=True,
     keywords='generate_tiff_offsets',
     name='generate_tiff_offsets',
@@ -44,7 +45,7 @@ setup(
     setup_requires=setup_requirements,
     test_suite='tests',
     tests_require=test_requirements,
-    url='https://github.com/ilan-gold/generate_tiff_offsets',
+    url='https://github.com/ilan-gold/generate-tiff-offsets',
     version='0.1.7',
     zip_safe=False,
 )
