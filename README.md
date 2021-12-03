@@ -21,7 +21,7 @@ Prototype spec for the structure required for TIFF IFD Index (JSON):
 where `IFD_offset_n` corresponds to the _nth_ byte-offset for the corresponding
 Image File Directory in the linear TIFF series.
 
-> Note: For OME-TIFF, the ordering of IFDs is determined by the `DimensionOrder`
+> **Note**: For OME-TIFF, the ordering of IFDs is determined by the `DimensionOrder`
 > attribute in the OME-XML metadata. Each combination of `C`, `Z`, and `T`
 > corresponds to **one IFD**, meaning the total number of IFDs is the product
 > of these dimensions (`T x C x Z`) and _independent_ of the number of pyramidal
@@ -37,7 +37,7 @@ Image File Directory in the linear TIFF series.
 This command writes the Version 0 Index to the local file system, adjacent to the
 input TIFF with the file name `<my_file>.offsets.json`.
 
-> NOTE: ⚠️ Our OME-TIFF web-viewer, [Avivator](http://avivator.gehlenborglab.org) expects
+> **Note**: ⚠️ Our OME-TIFF web-viewer, [Avivator](http://avivator.gehlenborglab.org) expects
 > this naming convension and folder structure in order for the Index
 > OME-TIFF to be recognized.
 
