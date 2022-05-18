@@ -1,8 +1,9 @@
 # generate-tiff-offsets
 
 A python cli (and web-application) for generating an Image File Directory (IFD)
-index for TIFFs. Read [our paper](https://osf.io/wd2gu/) or watch
-[this video](https://www.youtube.com/watch?v=cGB2TsSnfbo) to learn more about
+index for TIFFs. See [the benchmark](https://doi.org/10.6084/m9.figshare.19416344.v1) from
+[our paper](https://www.nature.com/articles/s41592-022-01482-7) or watch our
+[video explainer](https://www.youtube.com/watch?v=cGB2TsSnfbo) to learn more about
 how our strategy improves random chunk access speeds for OME-TIFF in
 [Viv](https://github.com/hms-dbmi/viv).
 
