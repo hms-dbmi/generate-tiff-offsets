@@ -7,7 +7,7 @@ from setuptools import setup, find_packages
 with open('README.md') as readme_file:
     readme = readme_file.read()
 
-requirements = [ 'tifffile==2023.9.26' ]
+requirements = [ 'tifffile>=2020.10.1' ]
 
 setup_requirements = [ ]
 
