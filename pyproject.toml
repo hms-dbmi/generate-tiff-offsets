@@ -1,0 +1,40 @@
+[build-system]
+build-backend = "hatchling.build"
+requires = ["hatchling", "hatch-vcs"]
+
+[project]
+name = "generate-tiff-offsets"
+description = "A package to generate TIFF offsets"
+authors = [
+    { name = "Ilan Gold", email = "ilan.gold@helmholtz-munich.de" }
+]
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+    "Environment :: Console",
+    "Framework :: Jupyter",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Natural Language :: English",
+    "Operating System :: MacOS :: MacOS X",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+    "Topic :: Scientific/Engineering :: Visualization",
+]
+license = { text = "MIT" }
+dependencies = ["tifffile>=2023.9.26"]
+dynamic = ["version"]
+[project.optional-dependencies]
+test = ["pytest"]
+
+[tool.hatch.version]
+source = "vcs"
+[tool.hatch.build.hooks.vcs]
+version-file = "generate_tiff_offsets/_version.py"
+[tool.hatch.build.targets.wheel]
+packages = ["src/anndata", "src/testing"]
