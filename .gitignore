@@ -24,7 +24,7 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
-/generate_tiff_offsets/_version.py
+/src/generate_tiff_offsets/_version.py
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
